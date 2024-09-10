@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreeJS Driving Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        #gameContainer {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        #gameOverOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark background */
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffd328; /* Green text */
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 0 0 12px #ffaa00d8, 0 0 24px #ffaa00b0, 0 0 48px #ffaa006b;
+        }
+        #gameOverOverlay h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+        }
+        #retryButton {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5em;
+            padding: 15px 30px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            background-color: #000000; /* Green button */
+            color: #ffffff; /* Black text */
+            border: none;
+            transition: all 0.3s ease;
+        }
+        #retryButton:hover {
+            background-color: #002200;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #a3ffa3aa;
+        }
+        #retryButton:active {
+            background-color: #001300;
+            transform: scale(1);
+            box-shadow: 0 0 20px #8dff8dc0;
+        }
+        #scoreDisplay {
+            position: absolute;
+            top: 460px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffffff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1em;
+            text-shadow: 0 0 8px #ffffffd8;
+        }
+        #bestScoreDisplay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #ffffff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2em;
+            text-shadow: 0 0 8px #ffffffd8;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer"></div>
+    <div id="scoreDisplay">Score: 0</div>
+    <div id="bestScoreDisplay">Best: 0</div>
+    <div id="gameOverOverlay">
+        <h1>GAME OVER</h1>
+        <p id="finalScore">Score: 0</p>
+        <p id="bestScore">Best: 0</p>
+        <button id="retryButton">RETRY</button>
+    </div>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
+                "three/examples/jsm/postprocessing/EffectComposer.js": "https://unpkg.com/three@0.138.0/examples/jsm/postprocessing/EffectComposer.js",
+                "three/examples/jsm/postprocessing/RenderPass.js": "https://unpkg.com/three@0.138.0/examples/jsm/postprocessing/RenderPass.js",
+                "three/examples/jsm/postprocessing/UnrealBloomPass.js": "https://unpkg.com/three@0.138.0/examples/jsm/postprocessing/UnrealBloomPass.js",
+                "three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.138.0/examples/jsm/loaders/GLTFLoader.js"
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
