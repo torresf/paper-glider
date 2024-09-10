@@ -33,6 +33,11 @@ let animationFrameId; // Add this line to store the animation frame ID
 // Add this near the top of the file with other variable declarations
 let startTime = 0;
 
+// Add these new variables for mobile controls
+let isMobileDevice = false;
+let leftTouchActive = false;
+let rightTouchActive = false;
+
 export function startGameLoop(spaceship, road) {
     if (!spaceship) {
         console.error("No spaceship provided to startGameLoop");
@@ -66,6 +71,16 @@ export function startGameLoop(spaceship, road) {
 
     // Reset the start time
     startTime = performance.now();
+
+    // Check if it's a mobile device
+    isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+
+    // Add touch event listeners for mobile devices
+    if (isMobileDevice) {
+        document.addEventListener('touchstart', handleTouchStart, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
 
     function animate(time) {
         gameSpeed += 0.001;
@@ -108,9 +123,20 @@ export function startGameLoop(spaceship, road) {
                 targetRotation = -maxSpaceshipRotation;
             }
 
+            // Handle mobile touch input
+            if (isMobileDevice) {
+                if (leftTouchActive) {
+                    velocity -= acceleration;
+                    targetRotation = maxSpaceshipRotation;
+                } else if (rightTouchActive) {
+                    velocity += acceleration;
+                    targetRotation = -maxSpaceshipRotation;
+                }
+            }
+
             // Apply deceleration if no input is detected
             if (!controllerInput || Math.abs(controllerInput.leftStick) <= joystickDeadzone) {
-                if (!keys['ArrowLeft'] && !keys['ArrowRight'] && !keys['KeyA'] && !keys['KeyD'] && !keys['KeyQ']) {
+                if (!keys['ArrowLeft'] && !keys['ArrowRight'] && !keys['KeyA'] && !keys['KeyD'] && !keys['KeyQ'] && !leftTouchActive && !rightTouchActive) {
                     velocity *= (1 - deceleration);
                 }
             }
@@ -121,9 +147,17 @@ export function startGameLoop(spaceship, road) {
             // Update spaceship position
             currentSpaceship.position.x += velocity * gameSpeed * 0.5;
             currentSpaceship.position.x = Math.max(Math.min(currentSpaceship.position.x, 9), -9);
+            if (currentSpaceship.position.x === 9) {
+                velocity = 0;
+            } else if (currentSpaceship.position.x === -9) {
+                velocity = 0;
+            }
 
             // Smoothly interpolate rotation
-            currentSpaceship.rotation.z += (targetRotation - currentSpaceship.rotation.z) * rotationSpeed * gameSpeed;
+            currentSpaceship.rotation.z +=
+                (targetRotation - currentSpaceship.rotation.z) *
+                rotationSpeed *
+                gameSpeed;
 
             // Update trails
             updateTrail(
@@ -240,13 +274,19 @@ function gameOver() {
     // Add this: Continue checking for controller input to allow restarting
     function checkForRestart() {
         let controllerInput = getControllerInput();
-        if (controllerInput && controllerInput.retry) {
+        if ((controllerInput && controllerInput.retry) || keys['Space']) {
             restartGame();
         } else {
             requestAnimationFrame(checkForRestart);
         }
     }
     checkForRestart();
+
+    if (isMobileDevice) {
+        document.removeEventListener('touchstart', handleTouchStart);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+    }
 }
 
 function showGameOverOverlay() {
@@ -255,7 +295,6 @@ function showGameOverOverlay() {
     document.getElementById('finalScore').textContent = `Score: ${score}`;
     document.getElementById('bestScore').textContent = `Best: ${bestScore}`;
     document.getElementById('retryButton').addEventListener('click', restartGame);
-    document.getElementById("retryButton").focus();
 }
 
 function restartGame() {
@@ -300,6 +339,9 @@ export function resetGameState() {
 
     // Reset the start time
     startTime = performance.now();
+
+    leftTouchActive = false;
+    rightTouchActive = false;
 }
 
 function updateScoreDisplay() {
@@ -354,4 +396,34 @@ export function removeTrails() {
     }
     leftTrail = null;
     rightTrail = null;
+}
+
+// Add these new functions for handling touch events
+function handleTouchStart(event) {
+    event.preventDefault();
+    updateTouchState(event.touches);
+}
+
+function handleTouchMove(event) {
+    event.preventDefault();
+    updateTouchState(event.touches);
+}
+
+function handleTouchEnd(event) {
+    event.preventDefault();
+    updateTouchState(event.touches);
+}
+
+function updateTouchState(touches) {
+    leftTouchActive = false;
+    rightTouchActive = false;
+
+    for (let touch of touches) {
+        const screenWidth = window.innerWidth;
+        if (touch.clientX < screenWidth / 2) {
+            leftTouchActive = true;
+        } else {
+            rightTouchActive = true;
+        }
+    }
 }

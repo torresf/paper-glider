@@ -38,8 +38,8 @@ export async function restartGame() {
                 child.material.dispose();
             }
         });
-        spaceship = null;
     }
+    spaceship = null;
     scene.remove(road);
 
     removeTrails();

@@ -28,30 +28,44 @@
             text-shadow: 0 0 12px #ffaa00d8, 0 0 24px #ffaa00b0, 0 0 48px #ffaa006b;
         }
         #gameOverOverlay h1 {
-            font-size: 3em;
-            margin-bottom: 30px;
+            font-size: calc(24px + 2vw);
+            margin-bottom: 32px;
         }
         #retryButton {
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.5em;
-            padding: 15px 30px;
-            margin-top: 20px;
+            font-size: calc(16px + .8vw);
+            padding: 20px 32px;
+            margin-top: 32px;
             cursor: pointer;
-            border-radius: 12px;
-            background-color: #000000; /* Green button */
-            color: #ffffff; /* Black text */
+            background-color: #004e1a8a; /* Green button */
+            color: #2aff70; /* Black text */
             border: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            text-shadow: 3px 3px 0px #2aff7175;
+            box-shadow: 0 0 42px #2aff7100;
+            animation: pulse 1.6s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                background-color: rgba(0, 78, 26, 0.24);
+            }
+            50% {
+                background-color: rgba(0, 78, 26, 0.74);
+            }
+            100% {
+                background-color: rgba(0, 78, 26, 0.24);
+            }
         }
         #retryButton:hover {
-            background-color: #002200;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #a3ffa3aa;
+            background-color: #001a00;
+            transform: scale(1.03);
+            box-shadow: 0 0 42px #2aff711c;
         }
         #retryButton:active {
             background-color: #001300;
             transform: scale(1);
-            box-shadow: 0 0 20px #8dff8dc0;
+            box-shadow: 0 0 48px #2aff7110;
         }
         #scoreDisplay {
             position: absolute;
@@ -60,7 +74,7 @@
             transform: translateX(-50%);
             color: #ffffff;
             font-family: 'Press Start 2P', cursive;
-            font-size: 1em;
+            font-size: calc(12px + 0.5vw);
             text-shadow: 0 0 8px #ffffffd8;
         }
         #bestScoreDisplay {
@@ -69,8 +83,12 @@
             right: 20px;
             color: #ffffff;
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.2em;
+            font-size: calc(14px + 0.5vw);
             text-shadow: 0 0 8px #ffffffd8;
+        }
+        #finalScore, #bestScore {
+            font-size: calc(14px + 0.5vw);
+            margin: 10px 0;
         }
     </style>
 </head>

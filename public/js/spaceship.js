@@ -9,8 +9,10 @@ export async function createSpaceship() {
     const spaceshipMaterial = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        colorBase: { value: new THREE.Color(0x0099ff) },
-        colorAccent: { value: new THREE.Color(0x00ffff) },
+        colorBase1: { value: new THREE.Color(0x0000ff) },
+        colorAccent1: { value: new THREE.Color(0xffffff) },
+        colorBase2: { value: new THREE.Color(0xff00ff) },
+        colorAccent2: { value: new THREE.Color(0xffcc55) },
         gameSpeed: { value: 0.5 },
       },
       vertexShader: `
@@ -25,8 +27,10 @@ export async function createSpaceship() {
         `,
       fragmentShader: `
             uniform float time;
-            uniform vec3 colorBase;
-            uniform vec3 colorAccent;
+            uniform vec3 colorBase1;
+            uniform vec3 colorAccent1;
+            uniform vec3 colorBase2;
+            uniform vec3 colorAccent2;
             uniform float gameSpeed;
             varying vec3 vNormal;
             varying vec3 vPosition;
@@ -48,27 +52,30 @@ export async function createSpaceship() {
 
             void main() {
                 vec3 normal = normalize(vNormal);
-                float fresnel = pow(1.0 - max(0.0, dot(normal, vec3(0.0, 0.0, 1.0))), 3.0);
+                float fresnel = pow(1.0 - max(0.0, dot(normal, vec3(0.0, 0.0, 1.0))), 10.0);
 
-                vec3 baseColor = rgb2hsv(colorBase);
-                baseColor.x = fract(.6 + baseColor.x + time * 0.01); // Shift hue over time
-                baseColor = hsv2rgb(baseColor);
+                // vec3 baseColor = rgb2hsv(colorBase1);
+                // baseColor.x = fract(.6 + baseColor.x + time * 0.01); // Shift hue over time
+                // baseColor = hsv2rgb(baseColor);
 
-                vec3 accentColor = rgb2hsv(colorAccent);
-                accentColor.x = fract(.1 + accentColor.x + time * 0.01); // Shift hue over time
-                accentColor = hsv2rgb(accentColor);
+                // vec3 accentColor = rgb2hsv(colorAccent1);
+                // accentColor.x = fract(.1 + accentColor.x + time * 0.01); // Shift hue over time
+                // accentColor = hsv2rgb(accentColor);
 
-                // vec3 color = mix(baseColor, accentColor, fresnel);
-                vec3 color = mix(vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 0.0), fresnel);
+                vec3 colorStart = mix(colorBase1, colorAccent1, fresnel);
+                vec3 colorEnd = mix(colorBase2, colorAccent2, fresnel);
                 
                 // Interpolate between white and yellow based on game speed
-                float t = (gameSpeed - 0.5) / (2.4 - 0.5);
-                vec3 speedColor = mix(vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 0.0), t);
+                float t = (gameSpeed - 0.5) / (2.2 - 0.5);
+                vec3 speedColor = mix(colorStart, colorEnd, t);
                 
                 // Mix the original color with the speed-based color
-                color = mix(color, speedColor, 0.5);
-                if (gameSpeed == 2.4) {
-                    color = vec3(1.0, .6, 1.0);
+                // color = mix(color, speedColor, 1.);
+                vec3 color = speedColor;
+                if (gameSpeed >= 2.2) {
+                    float t2 = (gameSpeed - 2.2) / (2.4 - 2.2);
+                    color = mix(color, vec3(1.0, .55, 1.0), t2);
+                    // color = vec3(1.0, .5, 1.0); // Purple
                 }
                 
                 gl_FragColor = vec4(color, 1.0);
