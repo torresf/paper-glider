@@ -52,7 +52,7 @@ export async function createSpaceship() {
 
             void main() {
                 vec3 normal = normalize(vNormal);
-                float fresnel = pow(1.0 - max(0.0, dot(normal, vec3(0.0, 0.0, 1.0))), 10.0);
+                float fresnel = pow(1.0 - max(0.0, dot(normal, vec3(0.0, -0.2, 1.0))), 6.0);
 
                 // vec3 baseColor = rgb2hsv(colorBase1);
                 // baseColor.x = fract(.6 + baseColor.x + time * 0.01); // Shift hue over time

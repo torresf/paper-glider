@@ -21,7 +21,7 @@ async function init() {
         
         // Load best score from local storage
         const bestScore = localStorage.getItem('bestScore') || 0;
-        document.getElementById('bestScoreDisplay').textContent = `Best: ${bestScore}`;
+        document.getElementById('bestScoreDisplay').textContent = `best: ${bestScore}`;
         
         startGameLoop(spaceship, road);
     } catch (error) {

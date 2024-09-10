@@ -79,15 +79,14 @@ export function createRoad() {
 
         // Glow under player
         vec3 glow = vec3(0.0);
-        vec2 playerUV = vec2(
-          (playerPosition.x + roadWidth * 0.5) / roadWidth,
-          1.0 - (playerPosition.z / roadLength)
-        );
-        // Calculate distance in UV space
-        // float dist = distance(vUv, playerUV);
-        float dist = distance(vPosition, playerPosition);
+        // Calculate distance in world space
+        vec3 playerPos = playerPosition;
+        playerPos.y -= 1.;
+        float dist = distance(vPosition, playerPos);
         float intensity = 1.0 - smoothstep(0.0, 0.8, dist * .05);
         glow += texColor.rgb * intensity;
+        intensity = 1.0 - smoothstep(0.0, 1., dist * .3);
+        glow += vec3(1., 0., 1.) * intensity * 0.2;
 
         vec3 finalColor = texColor.rgb + glow + enemyGlow;
         // vec3 finalColor = texColor.rgb;

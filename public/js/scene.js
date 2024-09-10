@@ -7,7 +7,7 @@ export let scene, camera, renderer, composer;
 
 export function initScene() {
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(95, window.innerWidth / window.innerHeight, .01, 1000);
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .01, 1000);
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('gameContainer').appendChild(renderer.domElement);
@@ -21,7 +21,9 @@ export function initScene() {
     sunLight.position.set(50, 100, 50);
     scene.add(sunLight);
 
-    camera.position.set(0, 4, 8);
+    // camera.position.set(0, 4, 8);
+    camera.position.set(0, 5, 8);
+    camera.rotation.x = -0.2;
 
     // Set a light blue background color
     // scene.background = new THREE.Color(0xE6F3FF);
@@ -38,7 +40,7 @@ export function initScene() {
         1,  // radius
         0.7  // threshold
     );
-    // composer.addPass(bloomPass);
+    composer.addPass(bloomPass);
 }
 
 // Add a resize handler

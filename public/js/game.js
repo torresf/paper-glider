@@ -214,6 +214,7 @@ export function startGameLoop(spaceship, road) {
 
             if (currentSpaceship) {
                 camera.position.x += (currentSpaceship.position.x - camera.position.x) * cameraLerpFactor;
+                // camera.rotation.z = currentSpaceship.position.x * -0.01
                 
                 updateDebugHelpers();
 
@@ -292,8 +293,8 @@ function gameOver() {
 function showGameOverOverlay() {
     const gameOverOverlay = document.getElementById('gameOverOverlay');
     gameOverOverlay.style.display = 'flex';
-    document.getElementById('finalScore').textContent = `Score: ${score}`;
-    document.getElementById('bestScore').textContent = `Best: ${bestScore}`;
+    document.getElementById('finalScore').textContent = `score: ${score}`;
+    document.getElementById('bestScore').textContent = `best: ${bestScore}`;
     document.getElementById('retryButton').addEventListener('click', restartGame);
 }
 
@@ -345,8 +346,8 @@ export function resetGameState() {
 }
 
 function updateScoreDisplay() {
-    document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
-    document.getElementById('bestScoreDisplay').textContent = `Best: ${bestScore}`;
+    document.getElementById('scoreDisplay').textContent = `${score}`;
+    document.getElementById('bestScoreDisplay').textContent = `${bestScore}`;
 }
 
 function hideCursor() {
