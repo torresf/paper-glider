@@ -3,13 +3,13 @@ import { createRoad } from './road.js';
 import { createSpaceship } from './spaceship.js';
 import { initControls } from './controls.js';
 import { startGameLoop, resetGameState, removeTrails } from './game.js';
-import { initController } from './controller.js'; // Add this line
+import { initController } from './controller.js';
 
 let spaceship, road;
 
 async function init() {
     initScene();
-    initController(); // Add this line
+    initController();
     road = createRoad();
     scene.add(road);
     

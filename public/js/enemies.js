@@ -66,7 +66,6 @@ export function createEnemy(speed) {
   enemy.traverse((child) => {
     if (child.isMesh) {
       child.material = enemyMaterial.clone();
-      child.userData.isEnemyMesh = true; // Add this line
     }
   });
 

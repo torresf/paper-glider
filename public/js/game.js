@@ -6,10 +6,10 @@ import { updateTrail, createTrail } from './spaceship.js';
 import * as THREE from "three";
 import { setSpaceship } from './enemies.js';
 import { BoxHelper } from 'three';
-import { getControllerInput } from './controller.js'; // Add this line
+import { getControllerInput } from './controller.js';
 
 const DEBUG = false;
-let gameSpeed = .5; // 0.6
+let gameSpeed = .5;
 let maxGameSpeed = 2.4;
 const maxSpeed = 0.45;
 const acceleration = 0.04;
@@ -28,7 +28,7 @@ let score = 0;
 let bestScore = localStorage.getItem('bestScore') || 0;
 
 let spaceshipBoxHelper, enemyBoxHelpers = [];
-let animationFrameId; // Add this line to store the animation frame ID
+let animationFrameId;
 
 // Add this near the top of the file with other variable declarations
 let startTime = 0;
@@ -46,7 +46,7 @@ export function startGameLoop(spaceship, road) {
 
     resetGameState();
     currentSpaceship = spaceship;
-    setSpaceship(spaceship);  // Add this line to set the spaceship reference for enemies
+    setSpaceship(spaceship);  // Set the spaceship reference for enemies
     currentRoad = road;
     isGameOver = false;
     lastSpawnTime = 0;
@@ -221,7 +221,7 @@ export function startGameLoop(spaceship, road) {
                 currentSpaceship.traverse((child) => {
                     if (child.isMesh && child.material.uniforms) {
                         child.material.uniforms.time.value = (time - startTime) * 0.002;
-                        child.material.uniforms.gameSpeed.value = gameSpeed; // Add this line
+                        child.material.uniforms.gameSpeed.value = gameSpeed;
                     }
                 });
             }

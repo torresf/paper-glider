@@ -109,14 +109,15 @@ function createRoadTexture() {
     canvas.width = 1024;
     canvas.height = 1024;
     
-    // Fill background with black
+    // Fill background with dark blue
     ctx.fillStyle = "rgb(3, 14, 22)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw main white stripes
-    ctx.fillStyle = "rgb(50, 220, 255)";
+    ctx.fillStyle = "rgb(20, 100, 120)";
+    // ctx.fillStyle = "rgb(10, 50, 60)";
     const stripeWidth = 1;
-    const gapWidth = 60;
+    const gapWidth = 64;
     const totalWidth = stripeWidth + gapWidth;
 
     for (let y = 0; y < canvas.height; y += totalWidth) {

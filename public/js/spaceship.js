@@ -9,10 +9,10 @@ export async function createSpaceship() {
     const spaceshipMaterial = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        colorBase1: { value: new THREE.Color(0x0000ff) },
-        colorAccent1: { value: new THREE.Color(0xffffff) },
-        colorBase2: { value: new THREE.Color(0xff00ff) },
-        colorAccent2: { value: new THREE.Color(0xffcc55) },
+        colorBase1: { value: new THREE.Color(0x4400ff) },
+        colorAccent1: { value: new THREE.Color(0xff99ff) },
+        colorBase2: { value: new THREE.Color(0xcc77ff) },
+        colorAccent2: { value: new THREE.Color(0xff99ff) },
         gameSpeed: { value: 0.5 },
       },
       vertexShader: `
@@ -107,10 +107,10 @@ export function updateTrail(trail, spaceshipPosition, time, rotationZ, isLeftTra
     for (let i = numPoints - 1; i > 0; i--) {
         positions[i * 3] = positions[(i - 1) * 3];
         positions[i * 3 + 1] = positions[(i - 1) * 3 + 1];
-        positions[i * 3 + 2] = positions[(i - 1) * 3 + 2] + .12;
+        positions[i * 3 + 2] = positions[(i - 1) * 3 + 2] + .1 * speed;
         positions[i * 3 + 3] = positions[(i - 1) * 3 + 3];
         positions[i * 3 + 4] = positions[(i - 1) * 3 + 4];
-        positions[i * 3 + 5] = positions[(i - 1) * 3 + 5] + .12;
+        positions[i * 3 + 5] = positions[(i - 1) * 3 + 5] + .1 * speed;
     }
 
     // Update the first point to the current spaceship position
@@ -137,7 +137,7 @@ export function createTrail(isLeftTrail) {
     const trailMaterial = new THREE.ShaderMaterial({
         uniforms: {
             time: { value: 0 },
-            color: { value: new THREE.Color(0x44ff44) },
+            color: { value: new THREE.Color(0xffffff) },
             isLeftTrail: { value: isLeftTrail },
             speed: { value: 0 },
         },
@@ -156,16 +156,6 @@ export function createTrail(isLeftTrail) {
                     }
                 }
             `,
-
-        // fragmentShader: `
-        //     uniform float time;
-        //     uniform vec3 color;
-        //     varying vec2 vUv;
-        //     void main() {
-        //         float alpha = sin(vUv.y * 3.14159) * pow(4.0 * vUv.y * (1.0 - vUv.y), 4.0);
-        //         gl_FragColor = vec4(color, alpha);
-        //     }
-        // `,
         fragmentShader: `
                 uniform float time;
                 uniform vec3 color;

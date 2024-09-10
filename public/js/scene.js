@@ -38,7 +38,7 @@ export function initScene() {
         1,  // radius
         0.7  // threshold
     );
-    composer.addPass(bloomPass);
+    // composer.addPass(bloomPass);
 }
 
 // Add a resize handler
