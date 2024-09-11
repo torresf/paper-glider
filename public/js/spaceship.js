@@ -160,8 +160,14 @@ export function createTrail(isLeftTrail) {
                 uniform float time;
                 uniform vec3 color;
                 varying vec2 vUv;
+                uniform float speed;
                 void main() {
                     float alpha = sin(vUv.y * 3.14159) * pow(4.0 * vUv.y * (1.0 - vUv.y), 4.0);
+                    vec3 color = color;
+                    if (speed == 2.4) {
+                        color = vec3(1.0, .6, 1.0);
+                        alpha = 1.0;
+                    }
                     gl_FragColor = vec4(color, alpha);
                 }
             `,

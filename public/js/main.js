@@ -30,6 +30,7 @@ async function init() {
 }
 
 export async function restartGame() {
+    removeTrails();
     if (spaceship) {
         scene.remove(spaceship);
         spaceship.traverse((child) => {
@@ -40,9 +41,8 @@ export async function restartGame() {
         });
     }
     spaceship = null;
-    scene.remove(road);
 
-    removeTrails();
+    scene.remove(road);
 
     road = createRoad();
     scene.add(road);

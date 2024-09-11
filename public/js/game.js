@@ -110,7 +110,7 @@ export function startGameLoop(spaceship, road) {
                 if (controllerInput.accelerate) {
                     gameSpeed = Math.min(gameSpeed + 0.01, maxGameSpeed);
                 } else if (controllerInput.brake) {
-                    gameSpeed = Math.max(gameSpeed - 0.01, 0.5);
+                    // gameSpeed = Math.max(gameSpeed - 0.01, 0.5);
                 }
             }
 
@@ -298,12 +298,17 @@ function showGameOverOverlay() {
     document.getElementById('retryButton').addEventListener('click', restartGame);
 }
 
-function restartGame() {
-    const gameOverOverlay = document.getElementById('gameOverOverlay');
-    gameOverOverlay.style.display = 'none';
+async function restartGame() {
+    const gameOverOverlay = document.getElementById("gameOverOverlay");
+    gameOverOverlay.style.display = "none";
     clearAllEnemies();
     removeTrails();
     hideCursor();
+    // Remove the current spaceship from the scene
+    if (currentSpaceship) {
+        scene.remove(currentSpaceship);
+        currentSpaceship = null;
+    }
 
     // Ensure the animation loop is stopped
     if (animationFrameId) {
@@ -311,13 +316,7 @@ function restartGame() {
         animationFrameId = null;
     }
 
-    // Remove the current spaceship from the scene
-    if (currentSpaceship) {
-        scene.remove(currentSpaceship);
-        currentSpaceship = null;
-    }
-
-    mainRestartGame();
+    await mainRestartGame();
 }
 
 export function resetGameState() {
