@@ -259,6 +259,58 @@ function checkCollisions(spaceship) {
     return false;
 }
 
+function showGameOverOverlay() {
+    const gameOverOverlay = document.getElementById('gameOverOverlay');
+    gameOverOverlay.style.display = 'flex';
+    document.getElementById('finalScore').textContent = `score: ${score}`;
+    document.getElementById('bestScore').textContent = `best: ${bestScore}`;
+    
+    // Remove existing event listener before adding a new one
+    const retryButton = document.getElementById('retryButton');
+    retryButton.removeEventListener('click', restartGame);
+    retryButton.addEventListener('click', restartGame);
+}
+
+let isRestarting = false; // Add this flag to prevent multiple restarts
+
+async function restartGame() {
+    if (isRestarting) return; // Prevent multiple simultaneous restarts
+    isRestarting = true;
+
+    const gameOverOverlay = document.getElementById("gameOverOverlay");
+    gameOverOverlay.style.display = "none";
+    clearAllEnemies();
+    removeTrails();
+    hideCursor();
+
+    // Remove the current spaceship from the scene
+    if (currentSpaceship) {
+        scene.remove(currentSpaceship);
+        
+        currentSpaceship.traverse((child) => {
+          if (child.isMesh) {
+            child.geometry.dispose();
+            child.material.dispose();
+          }
+        });
+        currentSpaceship = null; // Set to null after removal
+    }
+
+    // Ensure the animation loop is stopped
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+
+    try {
+        await mainRestartGame();
+    } catch (error) {
+        console.error("Error restarting game:", error);
+    } finally {
+        isRestarting = false; // Reset the flag regardless of success or failure
+    }
+}
+
 function gameOver() {
     isGameOver = true;
     if (animationFrameId) {
@@ -269,54 +321,25 @@ function gameOver() {
         bestScore = score;
         localStorage.setItem('bestScore', bestScore);
     }
-    showCursor(); // Show the cursor when the game is over
+    showCursor();
     showGameOverOverlay();
 
-    // Add this: Continue checking for controller input to allow restarting
+    // Use a single requestAnimationFrame for checking restart
     function checkForRestart() {
         let controllerInput = getControllerInput();
         if ((controllerInput && controllerInput.retry) || keys['Space']) {
             restartGame();
-        } else {
+        } else if (isGameOver) { // Only continue checking if the game is still over
             requestAnimationFrame(checkForRestart);
         }
     }
-    checkForRestart();
+    requestAnimationFrame(checkForRestart);
 
     if (isMobileDevice) {
         document.removeEventListener('touchstart', handleTouchStart);
         document.removeEventListener('touchmove', handleTouchMove);
         document.removeEventListener('touchend', handleTouchEnd);
     }
-}
-
-function showGameOverOverlay() {
-    const gameOverOverlay = document.getElementById('gameOverOverlay');
-    gameOverOverlay.style.display = 'flex';
-    document.getElementById('finalScore').textContent = `score: ${score}`;
-    document.getElementById('bestScore').textContent = `best: ${bestScore}`;
-    document.getElementById('retryButton').addEventListener('click', restartGame);
-}
-
-async function restartGame() {
-    const gameOverOverlay = document.getElementById("gameOverOverlay");
-    gameOverOverlay.style.display = "none";
-    clearAllEnemies();
-    removeTrails();
-    hideCursor();
-    // Remove the current spaceship from the scene
-    if (currentSpaceship) {
-        scene.remove(currentSpaceship);
-        currentSpaceship = null;
-    }
-
-    // Ensure the animation loop is stopped
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-    }
-
-    await mainRestartGame();
 }
 
 export function resetGameState() {
@@ -345,7 +368,20 @@ export function resetGameState() {
 }
 
 function updateScoreDisplay() {
-    document.getElementById('scoreDisplay').textContent = `${score}`;
+    const scoreDisplayElement = document.getElementById('scoreDisplay')
+    scoreDisplayElement.textContent = `${score}`;
+    if (
+      score > bestScore &&
+      !scoreDisplayElement.classList.contains("new-best-score")
+    ) {
+      scoreDisplayElement.classList.add("new-best-score");
+    }
+    if (
+      score < bestScore &&
+      scoreDisplayElement.classList.contains("new-best-score")
+    ) {
+      scoreDisplayElement.classList.remove("new-best-score");
+    }
     document.getElementById('bestScoreDisplay').textContent = `${bestScore}`;
 }
 
