@@ -7,6 +7,40 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        
+        /* Default text size */
+        body {
+            font-size: 16px;
+        }
+
+        /* If the device pixel ratio is 2 or higher, adjust font size */
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), 
+            only screen and (min--moz-device-pixel-ratio: 2), 
+            only screen and (-o-min-device-pixel-ratio: 2/1), 
+            only screen and (min-device-pixel-ratio: 2) {
+            body {
+                font-size: 24px; /* Adjust the text size for high-DPI screens */
+            }
+        }
+
+        /* Lansdcape on high end mobile */
+        @media only screen and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape), 
+            only screen and (min--moz-device-pixel-ratio: 2) and (orientation: landscape), 
+            only screen and (-o-min-device-pixel-ratio: 2/1) and (orientation: landscape), 
+            only screen and (min-device-pixel-ratio: 2) and (orientation: landscape) {
+            body {
+                font-size: 12px; /* Adjust the text size for high-DPI screens */
+            }
+            body #scoresContainer {
+                font-size: 10px;
+                left: 20px;
+                top: 20px;
+                transform: none;
+            }
+            body #scoresContainer #scoreContainer, body #scoresContainer #bestScoreContainer {
+                align-items: start;
+            }
+        }
         #gameContainer {
             position: relative;
             width: 100%;
@@ -28,17 +62,18 @@
             text-shadow: 0 0 12px #ffaa00d8, 0 0 24px #ffaa00b0, 0 0 48px #ffaa006b;
         }
         #gameOverOverlay h1 {
-            font-size: calc(24px + 2vw);
+            font-size: 3em;
             margin-bottom: 32px;
+            margin-top: 0px;
         }
         #retryButton {
             font-family: 'Press Start 2P', cursive;
-            font-size: calc(16px + .8vw);
+            font-size: 2em;
             padding: 20px 32px;
             margin-top: 32px;
             cursor: pointer;
-            background-color: #004e1a8a; /* Green button */
-            color: #2aff70; /* Black text */
+            background-color: #004e1a8a;
+            color: #2aff70;
             border: none;
             transition: all 0.2s ease;
             text-shadow: 3px 3px 0px #2aff7175;
@@ -67,58 +102,65 @@
             transform: scale(1);
             box-shadow: 0 0 48px #2aff7110;
         }
-        #scoreContainer {
+        #scoresContainer {
             position: absolute;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transform: translateX(-50%);
+            top: calc(13vh);
+            left: 50%;
+        }
+        #scoreContainer {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            transform: translateX(-50%);
-            top: calc(128px + 68px);
-            left: 50%;
             color: #ffffff;
             font-family: 'Press Start 2P', cursive;
-            font-size: calc(12px + 0.5vw);
+            font-size: 1em;
             text-shadow: 0 0 8px #ffffffd8;
         }
         #bestScoreContainer {
-            position: absolute;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            transform: translateX(-50%);
-            top: 128px;
-            left: 50%;
             color: #ffffff;
             font-family: 'Press Start 2P', cursive;
-            font-size: calc(12px + 0.5vw);
+            font-size: 1em;
             text-shadow: 0 0 8px #ffffffd8;
         }
         #bestScoreContainer span, #scoreContainer span {
-            font-size: calc(6px + 0.5vw);
+            font-size: calc(1em);
             color: #ffffff;
         }
         #bestScoreContainer #bestScoreDisplay, #scoreContainer #scoreDisplay {
-            font-size: calc(12px + 0.5vw);
+            font-size: 1.5em;
             color: #ffd328;
             text-shadow: 0 0 12px #ffaa00d8, 0 0 24px #ffaa00b0, 0 0 48px #ffaa006b;
         }
+        #scoreContainer #scoreDisplay.new-best-score {
+            color: #2aff70;
+            text-shadow: 0 0 12px #2aff70d8, 0 0 24px #2aff70b0, 0 0 48px #2aff706b;
+        }
         #finalScore, #bestScore {
-            font-size: calc(14px + 0.5vw);
-            margin: 10px 0;
+            font-size: 1.5em;
+            margin: 12px 0;
         }
     </style>
 </head>
 <body>
     <div id="gameContainer"></div>
-    <div id="bestScoreContainer">
-        <span>best</span>
-        <span id="bestScoreDisplay">0</span>
-    </div>
-    <div id="scoreContainer">
-        <span>score</span>
-        <span id="scoreDisplay">0</span>
+    <div id="scoresContainer">
+        <div id="bestScoreContainer">
+            <span>best</span>
+            <span id="bestScoreDisplay">0</span>
+        </div>
+        <div id="scoreContainer">
+            <span>score</span>
+            <span id="scoreDisplay">0</span>
+        </div>
     </div>
     <div id="gameOverOverlay">
         <h1>game over</h1>

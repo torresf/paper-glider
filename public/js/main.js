@@ -27,6 +27,8 @@ async function init() {
     } catch (error) {
         console.error("Failed to load spaceship:", error);
     }
+    
+    localStorage.setItem("Alors", "on triche ?");
 }
 
 export async function restartGame() {

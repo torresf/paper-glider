@@ -75,7 +75,6 @@ export async function createSpaceship() {
                 if (gameSpeed >= 2.2) {
                     float t2 = (gameSpeed - 2.2) / (2.4 - 2.2);
                     color = mix(color, vec3(1.0, .55, 1.0), t2);
-                    // color = vec3(1.0, .5, 1.0); // Purple
                 }
                 
                 gl_FragColor = vec4(color, 1.0);
