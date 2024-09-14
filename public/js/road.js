@@ -10,7 +10,6 @@ export function createRoad() {
     uniforms: {
       roadTexture: { value: roadTexture },
       roadLength: { value: roadLength },
-      roadWidth: { value: roadWidth },
       offset: { value: 0 },
       enemyPositions: { value: new Float32Array(30) }, // 10 enemies * 3 components
       playerPosition: { value: new THREE.Vector3(0, 0, 0) },
@@ -33,7 +32,6 @@ export function createRoad() {
     fragmentShader: `
       uniform sampler2D roadTexture;
       uniform float roadLength;
-      uniform float roadWidth;
       uniform vec3 enemyPositions[10];
       uniform vec3 playerPosition;
       uniform float time;

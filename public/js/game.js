@@ -81,9 +81,18 @@ export function startGameLoop(spaceship, road) {
         document.addEventListener('touchmove', handleTouchMove, { passive: false });
         document.addEventListener('touchend', handleTouchEnd, { passive: false });
     }
+    
+    let lastTime = 0;
 
     function animate(time) {
-        gameSpeed += 0.001;
+        // Calculate delta time in seconds
+        let deltaTime = (time - lastTime) / 1000;  // divide by 1000 to convert milliseconds to seconds
+        lastTime = time;
+        // Cap deltaTime to avoid large jumps (e.g. on tab switch)
+        deltaTime = Math.min(deltaTime, 0.1);  // Max out at 0.1 seconds (10 FPS)
+
+        // gameSpeed += 0.001;
+        gameSpeed += deltaTime/10;
         if (gameSpeed > maxGameSpeed) {
           gameSpeed = maxGameSpeed;
         }
@@ -206,7 +215,6 @@ export function startGameLoop(spaceship, road) {
             currentRoad.material.uniforms.enemyPositions.value = enemyPositions;
             currentRoad.material.uniforms.playerPosition.value = currentSpaceship.position;
             currentRoad.material.uniforms.time.value = (time - startTime) * 0.002;
-            currentRoad.material.uniforms.roadWidth.value = 20; // or whatever width you're using
 
             if (checkCollisions(currentSpaceship)) {
                 gameOver();
